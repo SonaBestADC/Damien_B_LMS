@@ -1,3 +1,10 @@
+/*
+Damien B.
+CEN 3024C
+September 8th
+Class name: Main
+Purpose: Acts as start point and runs logic for menu system and reading/writing to file.
+ */
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -6,11 +13,20 @@ public class Main {
     public static ArrayList<Book> books = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
 
+    /** main:
+     *This runs the readTextFile() to set the books array list equal to whatever is written in the text file.
+     * The text file and array list will always try to be equal at the same time. Then it runs the menu() method where the console
+     * based logic happens.
+     * @param args
+     */
     public static void main(String[] args) {
         readTextFile();
         menu();
     }
 
+    /** readTextFile:
+     * This reads the text.txt file then sets the books ArrayList to the contents of the text file.
+     */
     private static void readTextFile() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("text.txt"))) {
             String line;
@@ -23,6 +39,10 @@ public class Main {
         }
     }
 
+    /** menu:
+     *  The menu method contains most of the console based logic. It's a switch statement that takes a char as an input
+     *  and outputs one method depending on choice. 1 -> addBook(), 2 -> deleteBook(), 3 -> listBooks(), 4 -> returns.
+     */
     private static void menu() {
         System.out.println("What do you want to do?");
         System.out.println("1. Add new Book");
@@ -36,7 +56,6 @@ public class Main {
             case '3' -> listBooks();
             case '4' -> {
                 System.out.println("Quitting.");
-                return;
             }
             default -> {
                 System.out.println("Invalid choice");
@@ -45,6 +64,9 @@ public class Main {
         }
     }
 
+    /** listBooks:
+     *  Lists out of the books inside the books Arraylist. String is formatted to allow for ample space between each column.
+     */
     private static void listBooks() {
         System.out.printf("%-5s %-30s %-30s%n", "ID", "Name", "Author");
         for(Book book : books){
@@ -53,6 +75,11 @@ public class Main {
         menu();
     }
 
+    /** deleteBook:
+     *  Deletes a book from the array list based off an ID value. ID values are index + 1 of arraylist so
+     *  when removing from ArrayList it does index - 1.
+     *  Once done it runs saveBooks() to save to text file.
+     */
     private static void deleteBook() {
         System.out.println("Please write ID of book you wish to remove");
         int id = scanner.nextInt();
@@ -60,6 +87,10 @@ public class Main {
         saveBooks();
     }
 
+    /** addBook:
+     *  Asks the user for the name and author of a book. Then gets the books.size() + 1 for the ID.
+     *  Once done it runs saveBooks() to save to text file.
+     */
     private static void addBook() {
         String name;
         String author;
@@ -73,6 +104,9 @@ public class Main {
         menu();
     }
 
+    /** saveBooks:
+     *  Writes the contents of the books arrayList to the text.txt file.
+     */
     private static void saveBooks() {
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("text.txt"))){
             for(Book book : books){
