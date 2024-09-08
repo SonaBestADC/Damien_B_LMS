@@ -84,8 +84,8 @@ public class Main {
         System.out.println("Please write ID of book you wish to remove");
         int id = scanner.nextInt();
         books.remove(id - 1);
-        saveBooks();
         resetIDs();
+        saveBooks();
         menu();
     }
 
