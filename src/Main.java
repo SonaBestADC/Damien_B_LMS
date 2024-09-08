@@ -85,6 +85,18 @@ public class Main {
         int id = scanner.nextInt();
         books.remove(id - 1);
         saveBooks();
+        resetIDs();
+        menu();
+    }
+
+    /** resetIDs:
+     *  Resets the ID values for text file and book arrayList. This is done because if a book is removed the IDs will be in
+     *  numerical order, if this isn't ran the IDs will have holes in them.
+     */
+    private static void resetIDs() {
+        for(int i = 0; i < books.size(); i++){
+            books.get(i).setId(i + 1);
+        }
     }
 
     /** addBook:

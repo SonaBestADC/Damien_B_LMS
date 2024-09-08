@@ -30,6 +30,14 @@ public class Book {
         return id;
     }
 
+    /** setID
+     *  Setter for ID value
+     * @param id value of ID being passed in.
+     */
+    public void setId(int id){
+        this.id = id;
+    }
+
     /** getName:
      *  Getter for the book name.
      * @return name of current book.
