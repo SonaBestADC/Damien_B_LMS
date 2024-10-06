@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0beaa12c-4248-4933-b47b-77c891a1341a" name="Changes" comment="made code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/text.txt" beforeDir="false" afterPath="$PROJECT_DIR$/text.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +65,8 @@
       <workItem from="1725820486374" duration="408000" />
       <workItem from="1725821286948" duration="195000" />
       <workItem from="1725821548863" duration="3462000" />
+      <workItem from="1728254636423" duration="265000" />
+      <workItem from="1728254913506" duration="2300000" />
     </task>
     <task id="LOCAL-00001" summary="made code">
       <created>1725821355812</created>
@@ -75,6 +80,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="made code" />

@@ -9,49 +9,45 @@ public class Book {
     public int id;
     public String name;
     public String author;
+    public boolean isCheckedOut;
 
     /** Book:
      *  The constructor for the Book class. Used to save information about each book.
      * @param id The ID value for each book
      * @param name The name of each book
      * @param author The author of each book
+     * @param isCheckedOut Bool to see if book is checked out or not
      */
-    public Book(int id, String name, String author) {
+    public Book(int id, String name, String author, boolean isCheckedOut) {
         this.id = id;
         this.name = name;
         this.author = author;
+        this.isCheckedOut = isCheckedOut;
     }
 
-    /** getID:
-     *  Getter for the ID value.
-     * @return ID of current book.
-     */
     public int getId() {
         return id;
     }
 
-    /** setID
-     *  Setter for ID value
-     * @param id value of ID being passed in.
-     */
     public void setId(int id){
         this.id = id;
     }
 
-    /** getName:
-     *  Getter for the book name.
-     * @return name of current book.
-     */
     public String getName() {
         return name;
     }
 
-    /** getAuthor
-     *  Getter for the book author
-     * @return name of the author of current book.
-     */
+
     public String getAuthor() {
         return author;
+    }
+
+    public boolean getIsCheckedOut() {
+        return isCheckedOut;
+    }
+
+    public void setIsCheckedOut(boolean checkedOut) {
+        isCheckedOut = checkedOut;
     }
 
 
@@ -61,6 +57,6 @@ public class Book {
      */
     @Override
     public String toString() {
-        return id + "," + name + "," + author + "\n";
+        return id + "," + name + "," + author + "," + isCheckedOut + "\n";
     }
 }
