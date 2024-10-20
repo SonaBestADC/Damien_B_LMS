@@ -8,10 +8,14 @@ Purpose: Acts as start point and runs logic for menu system and reading/writing 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static ArrayList<Book> books = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
+    public static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     /** main:
      *This runs the readTextFile() to set the books array list equal to whatever is written in the text file.
@@ -27,12 +31,13 @@ public class Main {
     /** readTextFile:
      * This reads the text.txt file then sets the books ArrayList to the contents of the text file.
      */
-    private static void readTextFile() {
+    public static void readTextFile() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("text.txt"))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] values = line.split(",");
-                books.add(new Book(Integer.parseInt(values[0]), values[1], values[2], Boolean.parseBoolean(values[3])));
+                LocalDate returnDate = LocalDate.parse(values[4], dateFormatter);
+                books.add(new Book(Integer.parseInt(values[0]), values[1], values[2], Boolean.parseBoolean(values[3]), returnDate));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,7 +48,7 @@ public class Main {
      *  The menu method contains most of the console based logic. It's a switch statement that takes a char as an input
      *  and outputs one method depending on choice. 1 -> addBook(), 2 -> deleteBook(), 3 -> listBooks(), 4 -> returns.
      */
-    private static void menu() {
+    public static void menu() {
         System.out.println("What do you want to do?");
         System.out.println("1. Add new Book");
         System.out.println("2. Remove a book by barcode");
@@ -73,7 +78,7 @@ public class Main {
     /** deleteBookByName:
      * Asks the user for a title and deletes book from records off title
      */
-    private static void deleteBookByName() {
+    public static void deleteBookByName() {
         scanner.nextLine();
         System.out.println("Please enter the name of the book you wish to remove");
         String name = scanner.nextLine();
@@ -95,13 +100,19 @@ public class Main {
      * @param message Message that is displayed to the user
      * @param setter Sets the value of isCheckedOut to t/f
      */
-    private static void checkBook(String message, boolean setter) {
+    public static void checkBook(String message, boolean setter) {
         scanner.nextLine();
         System.out.println(message);
         String name = scanner.nextLine();
         for(Book book : books){
             if(book.getName().equalsIgnoreCase(name)){
                 book.setIsCheckedOut(setter);
+                // For checking out books
+                if(setter){
+                    book.setReturnDate(LocalDate.parse(LocalDate.now().plusWeeks(1).format(dateFormatter)));
+                }else{
+                    book.setReturnDate(null);
+                }
                 saveBooks();
                 listBooks();
                 menu();
@@ -113,10 +124,16 @@ public class Main {
     /** listBooks:
      *  Lists out of the books inside the books Arraylist. String is formatted to allow for ample space between each column.
      */
-    private static void listBooks() {
-        System.out.printf("%-5s %-30s %-30s %-30s%n", "ID", "Name", "Author", "Checked Out");
+    public static void listBooks() {
+        System.out.printf("%-5s %-30s %-30s %-15s %-30s%n", "ID", "Name", "Author", "Checked Out", "Return Date");
         for(Book book : books){
-            System.out.printf("%-5d %-30s %-30s %-30s%n", book.getId(), book.getName(), book.getAuthor(), book.getIsCheckedOut());
+            System.out.printf("%-5d %-30s %-30s %-15s %-30s%n",
+                    book.getId(),
+                    book.getName(),
+                    book.getAuthor(),
+                    (book.getIsCheckedOut() ? "Yes" : "No"),
+                    book.getReturnDate() != null ? book.getReturnDate().toString() : "N/A");
+
         }
         menu();
     }
@@ -126,7 +143,7 @@ public class Main {
      *  when removing from ArrayList it does index - 1.
      *  Once done it runs saveBooks() to save to text file.
      */
-    private static void deleteBookBarcode() {
+    public static void deleteBookBarcode() {
         scanner.nextLine();
         System.out.println("Please write ID of book you wish to remove");
         int id = scanner.nextInt();
@@ -141,7 +158,7 @@ public class Main {
      *  Resets the ID values for text file and book arrayList. This is done because if a book is removed the IDs will be in
      *  numerical order, if this isn't ran the IDs will have holes in them.
      */
-    private static void resetIDs() {
+    public static void resetIDs() {
         for(int i = 0; i < books.size(); i++){
             books.get(i).setId(i + 1);
         }
@@ -151,18 +168,15 @@ public class Main {
      *  Asks the user for the name and author of a book. Then gets the books.size() + 1 for the ID.
      *  Once done it runs saveBooks() to save to text file.
      */
-    private static void addBook() {
+    public static void addBook() {
         String name;
         String author;
-        boolean isCheckedOut;
         scanner.nextLine();
         System.out.println("Please enter the name of the book");
         name = scanner.nextLine();
         System.out.println("Please enter the name of the author");
         author = scanner.nextLine();
-        System.out.println("Is the book checked out? (true/false)");
-        isCheckedOut = scanner.nextBoolean();
-        books.add(new Book(books.size() + 1, name, author, isCheckedOut));
+        books.add(new Book(books.size() + 1, name, author, false, null));
         saveBooks();
         listBooks();
         menu();
@@ -171,7 +185,7 @@ public class Main {
     /** saveBooks:
      *  Writes the contents of the books arrayList to the text.txt file.
      */
-    private static void saveBooks() {
+    public static void saveBooks() {
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("text.txt"))){
             for(Book book : books){
                 bufferedWriter.write(book.toString());
