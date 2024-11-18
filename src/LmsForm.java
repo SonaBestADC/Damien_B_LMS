@@ -16,7 +16,6 @@ Class name: FileSelectorPanel
 Purpose: Main Frame where user interacts with GUI to edit library database
  */
 public class LmsForm extends JFrame {
-    private String file;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private JPanel LmsPanel;
     private JTextField bookIdTextField;
@@ -52,13 +51,13 @@ public class LmsForm extends JFrame {
      *
      * Return Value: None
      */
-    public LmsForm(String file) {
-        this.file = file;
+    public LmsForm() {
         setTitle("LMS");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(LmsPanel);
         pack();
-        Library.readTextFile(file);
+        DatabaseHandler.selectAllBooks();
+
 
         generateTable();
 
@@ -77,12 +76,8 @@ public class LmsForm extends JFrame {
                 boolean isCheckedOut = (boolean) bookTabel.getValueAt(selectedRow, 3);
                 String returnDate = (String) bookTabel.getValueAt(selectedRow, 4);
 
-                LocalDate parsedReturnDate = null;
-                if (!"null".equals(returnDate) && !"N/A".equals(returnDate)) {
-                    parsedReturnDate = LocalDate.parse(returnDate, formatter);
-                }
 
-                Book selectedBook = new Book(id, name, author, isCheckedOut, parsedReturnDate);
+                Book selectedBook = new Book(id, name, author, isCheckedOut, returnDate);
                 setFields(selectedBook);
             }
         });
@@ -91,7 +86,7 @@ public class LmsForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int id = Integer.parseInt(bookIdTextField.getText());
-                Library.deleteBookBarcode(id);
+                DatabaseHandler.deleteBookByID(id);
                 bookTabel.clearSelection();
                 fieldReset();
             }
@@ -101,7 +96,7 @@ public class LmsForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = bookNameTextField.getText();
-                Library.deleteBookByName(name);
+                DatabaseHandler.deleteBookByName(name);
                 bookTabel.clearSelection();
                 fieldReset();
             }
@@ -112,19 +107,19 @@ public class LmsForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(!Objects.equals(CheckBookNameText.getText(), "")){
                     String name = CheckBookNameText.getText();
-                    Book book = Library.getBook(name);
+                    Book book = DatabaseHandler.getBook(name);
                     if(book.getIsCheckedOut()){
-                        Library.checkBookIn(name);
+                        DatabaseHandler.checkInBook(name);
                     } else {
-                        Library.checkBookOut(name);
+                        DatabaseHandler.checkOutBook(name);
                     }
                 } else {
                     int id = Integer.parseInt(checkBookIdText.getText());
-                    Book book = Library.getBook(id);
+                    Book book = DatabaseHandler.getBook(id);
                     if(book.getIsCheckedOut()){
-                        Library.checkBookIn(book.getName());
+                        DatabaseHandler.checkInBook(book.getName());
                     } else {
-                        Library.checkBookOut(book.getName());
+                        DatabaseHandler.checkOutBook(book.getName());
                     }
                 }
 
@@ -147,9 +142,9 @@ public class LmsForm extends JFrame {
      */
     private void generateTable() {
         String[] columnNames = {"ID", "Name", "Author", "Checked Out", "Return Date"};
-        Object[][] data = new Object[Library.books.size()][5];
-        for (int i = 0; i < Library.books.size(); i++) {
-            Book book = Library.books.get(i);
+        Object[][] data = new Object[DatabaseHandler.books.size()][5];
+        for (int i = 0; i < DatabaseHandler.books.size(); i++) {
+            Book book = DatabaseHandler.books.get(i);
             data[i][0] = book.getId();
             data[i][1] = book.getName();
             data[i][2] = book.getAuthor();
@@ -182,7 +177,7 @@ public class LmsForm extends JFrame {
         if (book.getReturnDate() == null) {
             returnDateMarker.setText("N/A");
         } else {
-            returnDateMarker.setText(book.getReturnDate().format(formatter));
+            returnDateMarker.setText(book.getReturnDate());
         }
 
         bookIdTextField.setText(String.valueOf(book.getId()));
@@ -199,6 +194,7 @@ public class LmsForm extends JFrame {
      * Return Value: None
      */
     private void fieldReset() {
+        DatabaseHandler.selectAllBooks();
         generateTable();
         selectedBookMarker.setText("");
         isCheckMarker.setText("");

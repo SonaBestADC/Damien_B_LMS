@@ -12,7 +12,7 @@ public class Book {
     public String name;
     public String author;
     public boolean isCheckedOut;
-    public LocalDate returnDate;
+    public String returnDate;
 
     /**
      * Book:
@@ -23,7 +23,7 @@ public class Book {
      * @param author       The author of each book
      * @param isCheckedOut Bool to see if book is checked out or not
      */
-    public Book(int id, String name, String author, boolean isCheckedOut, LocalDate returnDate) {
+    public Book(int id, String name, String author, boolean isCheckedOut, String returnDate) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -56,11 +56,11 @@ public class Book {
         isCheckedOut = checkedOut;
     }
 
-    public LocalDate getReturnDate() {
+    public String getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
+    public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
     }
 
