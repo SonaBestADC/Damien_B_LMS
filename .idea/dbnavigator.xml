@@ -16,8 +16,8 @@
     <open-files />
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
-    <mapping file-url="file://$APPLICATION_CONFIG_DIR$/consoles/db/95ab34eb-1940-4c9c-b0a6-dd5fcf0a9353/console.sql" connection-id="virtual-sqlite-connection" session-id="" current-schema="" />
-    <mapping file-url="file://$APPLICATION_CONFIG_DIR$/consoles/db/28b1db65-405f-41f4-b286-c374518e8d90/console.sql" connection-id="virtual-sqlite-connection" session-id="" current-schema="" />
+    <mapping file-url="file://$APPLICATION_CONFIG_DIR$/consoles/db/95ab34eb-1940-4c9c-b0a6-dd5fcf0a9353/console.sql" connection-id="virtual-sqlite-connection" session-id="MAIN" current-schema="" />
+    <mapping file-url="file://$APPLICATION_CONFIG_DIR$/consoles/db/28b1db65-405f-41f4-b286-c374518e8d90/console.sql" connection-id="virtual-sqlite-connection" session-id="MAIN" current-schema="" />
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections />

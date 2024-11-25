@@ -8,12 +8,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-/*
-Damien B.
-CEN 3024C
-November 3rd
-Class name: FileSelectorPanel
-Purpose: Main Frame where user interacts with GUI to edit library database
+/**
+ * Class: LmsForm
+ *
+ * This class represents the main GUI frame for interacting with the library database.
+ * It provides functionalities to view, edit, check out, and delete books in the library.
+ *
+ * Author: Damien B.
+ * Course: CEN 3024C
+ * Date: November 3rd
  */
 public class LmsForm extends JFrame {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -43,13 +46,9 @@ public class LmsForm extends JFrame {
 
     /**
      * Constructor: LmsForm
+     *
      * Initializes the LMS form with a specified file for book data. Sets up the JFrame, reads the book data,
      * generates the table, and adds listeners for various UI components.
-     *
-     * Arguments:
-     * - String file: the path to the file containing book data.
-     *
-     * Return Value: None
      */
     public LmsForm() {
         setTitle("LMS");
@@ -57,7 +56,6 @@ public class LmsForm extends JFrame {
         setContentPane(LmsPanel);
         pack();
         DatabaseHandler.selectAllBooks();
-
 
         generateTable();
 
@@ -75,7 +73,6 @@ public class LmsForm extends JFrame {
                 String author = (String) bookTabel.getValueAt(selectedRow, 2);
                 boolean isCheckedOut = (boolean) bookTabel.getValueAt(selectedRow, 3);
                 String returnDate = (String) bookTabel.getValueAt(selectedRow, 4);
-
 
                 Book selectedBook = new Book(id, name, author, isCheckedOut, returnDate);
                 setFields(selectedBook);
@@ -105,10 +102,10 @@ public class LmsForm extends JFrame {
         checkBookBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!Objects.equals(CheckBookNameText.getText(), "")){
+                if (!Objects.equals(CheckBookNameText.getText(), "")) {
                     String name = CheckBookNameText.getText();
                     Book book = DatabaseHandler.getBook(name);
-                    if(book.getIsCheckedOut()){
+                    if (book.getIsCheckedOut()) {
                         DatabaseHandler.checkInBook(name);
                     } else {
                         DatabaseHandler.checkOutBook(name);
@@ -116,7 +113,7 @@ public class LmsForm extends JFrame {
                 } else {
                     int id = Integer.parseInt(checkBookIdText.getText());
                     Book book = DatabaseHandler.getBook(id);
-                    if(book.getIsCheckedOut()){
+                    if (book.getIsCheckedOut()) {
                         DatabaseHandler.checkInBook(book.getName());
                     } else {
                         DatabaseHandler.checkOutBook(book.getName());
@@ -134,11 +131,9 @@ public class LmsForm extends JFrame {
 
     /**
      * Method: generateTable
+     *
      * Creates a table to display the books with their details, including ID, name, author, checked out status,
      * and return date. Populates the table with data from the Library's book list.
-     *
-     * Arguments: None
-     * Return Value: None
      */
     private void generateTable() {
         String[] columnNames = {"ID", "Name", "Author", "Checked Out", "Return Date"};
@@ -158,13 +153,11 @@ public class LmsForm extends JFrame {
 
     /**
      * Method: setFields
+     *
      * Updates the form's fields with the details of the selected book, including the book's name, checked out status,
      * return date, and associated IDs.
      *
-     * Arguments:
-     * - Book book: the book object whose details will be displayed in the form.
-     *
-     * Return Value: None
+     * @param book the book object whose details will be displayed in the form.
      */
     private void setFields(Book book) {
         selectedBookMarker.setText(book.getName());
@@ -188,10 +181,8 @@ public class LmsForm extends JFrame {
 
     /**
      * Method: fieldReset
-     * Resets all input fields and the displayed book table to its default state, clearing selections and markers.
      *
-     * Arguments: None
-     * Return Value: None
+     * Resets all input fields and the displayed book table to its default state, clearing selections and markers.
      */
     private void fieldReset() {
         DatabaseHandler.selectAllBooks();
